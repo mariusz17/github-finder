@@ -15,6 +15,8 @@ function User() {
 	useEffect(() => {
 		getUser(params.login);
 		getUserRepos(params.login);
+		//below comment is to get rid of eslint warning for empty array dependency
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const {
