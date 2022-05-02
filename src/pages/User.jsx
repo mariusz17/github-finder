@@ -1,23 +1,35 @@
 import { FaCodepen, FaStore, FaUserFriends, FaUsers } from "react-icons/fa";
-import { useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import GithubContext from "../context/github/GithubContext";
-import { useParams } from "react-router-dom";
 import Spinner from "../components/layout/Spinner";
 import RepoList from "../components/repos/RepoList";
+import { getUser, getUserRepos } from "../context/github/GithubActions";
 
 function User() {
-	const { getUser, user, loading, getUserRepos, repos } =
-		useContext(GithubContext);
+	const { loading, dispatch, repos, user } = useContext(GithubContext);
 
 	const params = useParams();
 
 	useEffect(() => {
-		getUser(params.login);
-		getUserRepos(params.login);
-		//below comment is to get rid of eslint warning for empty array dependency
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		dispatch({ type: "SET_LOADING" });
+
+		const getUserData = async () => {
+			const userData = await getUser(params.login);
+			dispatch({
+				type: "GET_USER",
+				payload: userData,
+			});
+
+			const userRepos = await getUserRepos(params.login);
+			dispatch({
+				type: "GET_REPOS",
+				payload: userRepos,
+			});
+		};
+
+		getUserData();
+	}, [dispatch, params.login]);
 
 	const {
 		name,
