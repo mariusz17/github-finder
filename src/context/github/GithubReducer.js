@@ -6,6 +6,12 @@ const githubReducer = (state, action) => {
         loading: true,
       };
 
+    case "CLEAR_LOADING":
+      return {
+        ...state,
+        loading: false,
+      };
+
     case "GET_USERS":
       return {
         ...state,

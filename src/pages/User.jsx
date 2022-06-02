@@ -1,6 +1,6 @@
 import { FaCodepen, FaStore, FaUserFriends, FaUsers } from "react-icons/fa";
 import { useContext, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import GithubContext from "../context/github/GithubContext";
 import Spinner from "../components/layout/Spinner";
 import RepoList from "../components/repos/RepoList";
@@ -8,6 +8,7 @@ import { getUserAndRepos } from "../context/github/GithubActions";
 
 function User() {
   const { loading, dispatch, repos, user } = useContext(GithubContext);
+  const navigate = useNavigate();
 
   const params = useParams();
 
@@ -16,14 +17,20 @@ function User() {
 
     const getUserData = async () => {
       const userData = await getUserAndRepos(params.login);
-      dispatch({
-        type: "GET_USER_AND_REPOS",
-        payload: userData,
-      });
+
+      if (userData.name === "AxiosError") {
+        dispatch({ type: "CLEAR_LOADING" });
+        navigate("/notfound");
+      } else {
+        dispatch({
+          type: "GET_USER_AND_REPOS",
+          payload: userData,
+        });
+      }
     };
 
     getUserData();
-  }, [dispatch, params.login]);
+  }, [dispatch, params.login, navigate]);
 
   const {
     name,

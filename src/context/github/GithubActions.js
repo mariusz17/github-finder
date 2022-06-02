@@ -29,10 +29,14 @@ export const getUserAndRepos = async (login) => {
     per_page: 10,
   });
 
-  const [user, repos] = await Promise.all([
-    github.get(`/users/${login}`),
-    github.get(`/users/${login}/repos?${params}`),
-  ]);
+  try {
+    const [user, repos] = await Promise.all([
+      github.get(`/users/${login}`),
+      github.get(`/users/${login}/repos?${params}`),
+    ]);
 
-  return { user: user.data, repos: repos.data };
+    return { user: user.data, repos: repos.data };
+  } catch (error) {
+    return error;
+  }
 };
