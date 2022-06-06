@@ -18,13 +18,14 @@ function About() {
         </strong>
         .
       </p>
-      <p className="text-lg text-gray-400">
-        Version <span className="text-white">1.0.0</span>
+      <p className="text-lg">
+        <span className="text-gray-400">Version: </span>
+        <span className="dark:text-white">1.0.0</span>
       </p>
-      <p className="text-lg text-gray-400">
-        Layout By:
+      <p className="text-lg">
+        <span className="text-gray-400">Layout By: </span>
         <a
-          className="text-white"
+          className="dark:text-white"
           href="https://twitter.com/hassibmoddasser"
           target="_blank"
           rel="noreferrer"
